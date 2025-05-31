@@ -1,13 +1,92 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+import React from "react";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+
+const Layout = ({ children }) => (
+  <div className="min-h-screen bg-zinc-900 text-white font-sans">
+    <header className="bg-zinc-800 shadow-md p-4 flex justify-between items-center">
+      <h1 className="text-3xl font-bold text-lime-400">Kiwi Customs</h1>
+      <nav className="space-x-4">
+        <Link to="/" className="hover:text-lime-400">Home</Link>
+        <Link to="/team" className="hover:text-lime-400">Team</Link>
+        <Link to="/parts" className="hover:text-lime-400">Parts</Link>
+        <Link to="/tyres" className="hover:text-lime-400">Tyres</Link>
+      </nav>
+    </header>
+    <main className="p-6">{children}</main>
+    <footer className="bg-zinc-800 p-4 text-center text-sm text-zinc-400">© 2025 Kiwi Customs</footer>
+  </div>
+);
+
+const Home = () => (
+  <Card className="bg-zinc-800 text-white shadow-xl rounded-2xl p-6">
+    <CardContent>
+      <h2 className="text-2xl font-bold text-lime-400 mb-4">About Kiwi Customs</h2>
+      <p>
+        Kiwi Customs is where culture meets chrome. Specializing in lowrider and cholo-style custom builds, we bring passion and authenticity to every ride. From classic bombs to modern mods, we live and breathe the low and slow life.
+      </p>
+    </CardContent>
+  </Card>
+);
+
+const Team = () => (
+  <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+    {["Kiwi", "Shadow", "Lil Joker"].map((member, i) => (
+      <Card key={i} className="bg-zinc-800 text-white rounded-2xl shadow-md">
+        <CardContent className="p-4">
+          <h3 className="text-xl font-bold text-lime-300">{member}</h3>
+          <p>Specialist in {member === "Kiwi" ? "bodywork" : member === "Shadow" ? "hydraulics" : "paint and pinstriping"}</p>
+        </CardContent>
+      </Card>
+    ))}
+  </div>
+);
+
+const Parts = () => (
+  <div className="space-y-4">
+    {[{ name: "Hydraulic Kit", price: "$1200" }, { name: "Wire Wheels", price: "$800" }, { name: "Custom Paint Job", price: "$2500" }].map((part, i) => (
+      <Card key={i} className="bg-zinc-800 text-white">
+        <CardContent className="flex justify-between items-center p-4">
+          <span>{part.name}</span>
+          <span className="text-lime-400 font-semibold">{part.price}</span>
+        </CardContent>
+      </Card>
+    ))}
+  </div>
+);
+
+const Tyres = () => {
+  const tyreModels = [
+    { model: "LowPro 13", image: "https://via.placeholder.com/150?text=LowPro+13" },
+    { model: "Street Glide 14", image: "https://via.placeholder.com/150?text=Street+Glide+14" },
+    { model: "Chrome Roller 15", image: "https://via.placeholder.com/150?text=Chrome+Roller+15" }
+  ];
+  return (
+    <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+      {tyreModels.map((tyre, i) => (
+        <Card key={i} className="bg-zinc-800 text-white rounded-2xl shadow-lg">
+          <CardContent className="p-4">
+            <img src={tyre.image} alt={tyre.model} className="rounded-xl mb-2" />
+            <h4 className="text-lg font-bold text-lime-400">{tyre.model}</h4>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+};
+
+export default function App() {
+  return (
+    <Router>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/team" element={<Team />} />
+          <Route path="/parts" element={<Parts />} />
+          <Route path="/tyres" element={<Tyres />} />
+        </Routes>
+      </Layout>
+    </Router>
+  );
+}
